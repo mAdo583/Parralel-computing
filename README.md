@@ -1,5 +1,3 @@
----
-
 # ✅ **Final README.md — Mandelbrot Fractal (C++ Multithreading on ALMA)**
 
 ````markdown

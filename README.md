@@ -1,5 +1,3 @@
-Perfect 👏 — here’s your **complete and professional `README.md`** for the **Mandelbrot fractal assignment** — formatted for GitHub and designed so that **any student at Uni Wien can follow it step by step** to connect to ALMA, compile, and run the program themselves.
-
 ---
 
 # ✅ **Final README.md — Mandelbrot Fractal (C++ Multithreading on ALMA)**

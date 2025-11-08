@@ -62,35 +62,38 @@ helper.hpp
 histogram.cpp
 histogram-atomic-mutex.cpp
 histogram-best.cpp
+
 4. Compile on ALMA
 
 Use ALMA’s system GCC compiler:
-
+```bash
 /opt/global/gcc-11.2.0/bin/g++ -std=c++20 -O3 -march=native -DNDEBUG -lpthread histogram-atomic-mutex.cpp -o histogram_atomic
 /opt/global/gcc-11.2.0/bin/g++ -std=c++20 -O3 -march=native -DNDEBUG -lpthread histogram-best.cpp -o histogram_best
-
+```
 
 Check binaries:
 
 ls -lh histogram_atomic histogram_best
 
 ▶️ 5. Run the Programs
-Run a single test
-./histogram_best --num-threads 4 --num-bins 10 --sample-size 30000000 --print-level 1
 
+Run a single test
+```bash
+./histogram_best --num-threads 4 --num-bins 10 --sample-size 30000000 --print-level 1
+```
 Run parallel tests with srun
 
 Example on ALMA:
-
+```bash
 srun --partition=all --nodes=1 --ntasks=1 --cpus-per-task=8 \
      --cpu-bind=cores --hint=compute_bound --exclusive \
      ./histogram_best --num-threads 8 --num-bins 10 --sample-size 100000000 --print-level 2
-    
+   ``` 
 📊 6. Measure and Record Performance
 
 Step 1 – Collect timing results
 
-echo "threads,time_sec" > timings_best.csv
+```bashecho "threads,time_sec" > timings_best.csv
 for t in 1 2 4 8 16 32; do
   tt=$(srun --partition=all --nodes=1 --ntasks=1 --cpus-per-task=$t \
             --cpu-bind=cores --hint=compute_bound --exclusive \
@@ -100,12 +103,12 @@ for t in 1 2 4 8 16 32; do
 done
 cat timings_best.csv
 
-
+```
 Step 2 – Compute speedup
-
+```bash
 awk -F, 'NR==2{T1=$2} NR>1{printf "S(%d)=%.2f\n",$1,T1/$2}' timings_best.csv
 🧩 8. Verify Correctness
-
+```
 For both versions, the total count must equal the --sample-size:
 
 ./histogram_atomic --num-threads 8 --num-bins 10 --sample-size 30000000 --print-level 1
@@ -119,6 +122,7 @@ total:30000000
 🧮 9. Compare Both Versions
 
 Atomic Version (V1)
+```bash
 echo "threads,time_sec" > timings_atomic.csv
 for t in 1 2 4 8 16 32; do
   tt=$(srun --partition=all --nodes=1 --ntasks=1 --cpus-per-task=$t \
@@ -127,7 +131,7 @@ for t in 1 2 4 8 16 32; do
   echo "$t,$tt" >> timings_atomic.csv
 done
 awk -F, 'NR==2{T1=$2} NR>1{printf "S(%d)=%.2f\n",$1,T1/$2}' timings_atomic.csv
-
+```
 
 Expected: Very low speedup (~1×) — this version is limited by synchronization.
 

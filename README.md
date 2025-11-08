@@ -46,10 +46,10 @@ After the first login, you may be required to change it.
 📂 3. Upload Your Code
 
 On your local terminal (Mac/Linux):
-
+```bash
 scp main.cpp helper.hpp histogram.cpp histogram-atomic-mutex.cpp histogram-best.cpp \
     aXXXXXXX@alma.par.univie.ac.at:~/histogram/
-
+```
 
 Then log in again and verify:
 
